@@ -6,6 +6,8 @@ import { useCreateSubscriberMutation } from "../graphql/generated";
 
 import { Logo } from "../components/logo";
 
+import subscribeImag from "../assets/images/subscribe.png";
+
 type FormValues = {
   name: string;
   email: string;
@@ -104,11 +106,7 @@ export function Subscribe() {
           </div>
         </div>
 
-        <img
-          src="/src/assets/images/subscribe.png"
-          alt="subscribe image"
-          className="mt-10"
-        />
+        <img src={subscribeImag} alt="subscribe image" className="mt-10" />
       </div>
     </div>
   );
