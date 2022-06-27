@@ -4,13 +4,11 @@ import { isPast, format } from "date-fns";
 import ptBR from "date-fns/locale/pt-BR";
 import classnames from "classnames";
 
-import { LessonsType } from "../typings";
-
 interface LessonProps {
   title: string;
   slug: string;
   availableAt: Date;
-  type: LessonsType;
+  type: "class" | "live";
 }
 
 type Params = {
@@ -80,7 +78,7 @@ export function Lesson({ title, slug, type, availableAt }: LessonProps) {
               }
             )}
           >
-            {LessonsType.live === type ? "AO VIVO" : "AULA PRÁTICA"}
+            {type === "live" ? "AO VIVO" : "AULA PRÁTICA"}
           </span>
         </header>
 

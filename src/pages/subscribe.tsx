@@ -1,7 +1,8 @@
 import { useNavigate } from "react-router-dom";
-import { gql, useMutation } from "@apollo/client";
 import { useForm } from "react-hook-form";
 import classnames from "classnames";
+
+import { useCreateSubscriberMutation } from "../graphql/generated";
 
 import { Logo } from "../components/logo";
 
@@ -10,14 +11,6 @@ type FormValues = {
   email: string;
 };
 
-const CREATE_SUBSCRIBER_MUTATION = gql`
-  mutation createSubscription($name: String!, $email: String!) {
-    createSubscriber(data: { name: $name, email: $email }) {
-      id
-    }
-  }
-`;
-
 export function Subscribe() {
   const navigate = useNavigate();
   const {
@@ -25,7 +18,7 @@ export function Subscribe() {
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<FormValues>();
-  const [createSubscriber] = useMutation(CREATE_SUBSCRIBER_MUTATION);
+  const [createSubscriber] = useCreateSubscriberMutation();
 
   async function onSubmit(values: FormValues) {
     try {

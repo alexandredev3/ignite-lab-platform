@@ -1,0 +1,6 @@
+  query GetFirstAvailableLesson {
+    lessons(orderBy: availableAt_ASC, stage: PUBLISHED, first: 1) {
+      id
+      slug
+    }
+  }
