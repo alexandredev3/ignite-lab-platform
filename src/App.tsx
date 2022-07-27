@@ -4,7 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 import { apolloClient } from "./lib/apollo";
 import { Router } from "./router";
 
-function App() {
+export function App() {
   return (
     <BrowserRouter>
       <ApolloProvider client={apolloClient}>
@@ -13,5 +13,3 @@ function App() {
     </BrowserRouter>
   );
 }
-
-export default App;
