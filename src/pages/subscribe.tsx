@@ -39,8 +39,8 @@ export function Subscribe() {
   return (
     <div className="min-h-screen bg-blur bg-cover bg-no-repeat flex flex-col items-center">
       <div className="mx-auto bg-top bg-react-icon bg-no-repeat">
-        <div className="w-full max-w-[1100px] flex items-center justify-between mt-20 mx-auto">
-          <div className="max-w-[640px]">
+        <div className="w-full max-w-[1100px] flex md:flex-row flex-col items-center justify-between mt-20 mx-auto">
+          <div className="md:block flex flex-col items-center max-w-[640px] md:text-left text-center">
             <Logo />
 
             <h1 className="mt-8 text-[2.5rem] leading-tight">
@@ -55,7 +55,7 @@ export function Subscribe() {
             </p>
           </div>
 
-          <div className="p-8 bg-gray-700 border border-gray-500 rounded">
+          <div className="md:w-[392px] md:mt-0 mt-[32px] w-full p-8 bg-gray-700 border border-gray-500 rounded">
             <strong className="block text-2xl mb-6">
               Inscreva-se gratuitamente
             </strong>
