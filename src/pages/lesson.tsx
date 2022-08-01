@@ -35,9 +35,7 @@ export function Lesson() {
   return (
     <>
       <div className="flex-1">
-        {!error && (
-          <Player videoId={data?.lesson?.videoId!} lessonId={data?.lesson?.id!} />
-        )}
+        <Player videoId={data?.lesson?.videoId!} lessonId={data?.lesson?.id!} />
 
         <div className="p-8 max-w-[1100px] mx-auto">
           <section className="md:flex-row flex-col flex items-start gap-16">

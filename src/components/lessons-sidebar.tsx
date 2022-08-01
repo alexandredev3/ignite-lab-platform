@@ -6,13 +6,12 @@ import { useCollapse } from "../hooks/use-collapse";
 import { Lesson } from "./lesson";
 
 export function LessonsSidebar() {
-  const { isCollapse } = useCollapse();
+  const { hasCollapsed, isTableOrMobile } = useCollapse();
   const { loading, data } = useGetLessonsQuery();
 
-  return (
-    // <Portal>
+  const content = (
     <Transition
-      show={!isCollapse}
+      show={!hasCollapsed}
       enter="transition-opacity duration-555"
       enterFrom="opacity-0"
       enterTo="opacity-100"
@@ -43,6 +42,7 @@ export function LessonsSidebar() {
         )}
       </aside>
     </Transition>
-    // </Portal>
   );
+
+  return isTableOrMobile ? <Portal>{content}</Portal> : content;
 }

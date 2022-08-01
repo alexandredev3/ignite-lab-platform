@@ -6,7 +6,7 @@ interface CollapseProviderProps {
 }
 
 interface CollapseContextProps {
-  isCollapse: boolean;
+  hasCollapsed: boolean;
   toggleCollapse: () => void;
   isTableOrMobile: boolean;
 }
@@ -16,24 +16,22 @@ const CollapseContext = createContext<CollapseContextProps>(
 );
 
 function CollapseProvider({ children }: CollapseProviderProps) {
+  const [hasCollapsed, setHasCollapsed] = useState(false);
   const isTableOrMobile = useMediaQuery({ maxWidth: 768 });
-  const [isCollapse, setIsCollapse] = useState(() => {
-    if (isTableOrMobile) {
-      return true;
-    }
 
-    return false;
-  });
-
-  function handleToggleCollapse() {
-    setIsCollapse(!isCollapse);
+  function toggleCollapse() {
+    setHasCollapsed(!hasCollapsed);
   }
+
+  useEffect(() => {
+    setHasCollapsed(isTableOrMobile);
+  }, [isTableOrMobile])
 
   return (
     <CollapseContext.Provider
       value={{
-        isCollapse,
-        toggleCollapse: handleToggleCollapse,
+        hasCollapsed,
+        toggleCollapse,
         isTableOrMobile
       }}
     >

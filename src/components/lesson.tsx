@@ -1,9 +1,11 @@
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 import { CheckCircle, Lock } from "phosphor-react";
 import { isPast, format } from "date-fns";
 import ptBR from "date-fns/locale/pt-BR";
 import classnames from "classnames";
-import { useNavigate } from 'react-router-dom';
+
+import { useCollapse } from '../hooks/use-collapse';
 
 interface LessonProps {
   title: string;
@@ -17,6 +19,7 @@ type Params = {
 };
 
 export function Lesson({ title, slug, type, availableAt }: LessonProps) {
+  const { isTableOrMobile } = useCollapse();
   const { slug: currentLessonSlug } = useParams<Params>();
   const navigate = useNavigate();
 
@@ -54,7 +57,7 @@ export function Lesson({ title, slug, type, availableAt }: LessonProps) {
           }
         )}
       >
-        {isActiveLesson && (
+        {isActiveLesson && !isTableOrMobile && (
           <span className="w-4 h-4 before:w-4 before:h-4 absolute -left-2 bottom-0 top-[50%] -translate-y-[50%] -z-1 rounded-sm rotate-45 bg-green-500" />
         )}
 
