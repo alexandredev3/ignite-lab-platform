@@ -64,7 +64,7 @@ export function Player({ videoId, lessonId }: PlayerProps) {
             onClick: () => {
               toast.update(nextLessonToastId, {
                 data: {
-                  skip: false
+                  slug: null
                 }
               });
             },
