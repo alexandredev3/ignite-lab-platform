@@ -1,7 +1,6 @@
 import { Outlet } from 'react-router-dom';
 
 import { Header } from './components/header';
-import { Sidebar } from './components/sidebar';
 import { CollapseProvider } from './context/collapse-context';
 
 export function Layout() {
@@ -11,7 +10,6 @@ export function Layout() {
         <Header />
         <main className="flex flex-1">
           <Outlet />
-          <Sidebar />
         </main>
       </div>
     </CollapseProvider>

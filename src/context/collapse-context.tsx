@@ -16,24 +16,22 @@ const CollapseContext = createContext<CollapseContextProps>(
 );
 
 function CollapseProvider({ children }: CollapseProviderProps) {
-  const [isCollapse, setIsCollapse] = useState(true);
   const isTableOrMobile = useMediaQuery({ maxWidth: 768 });
+  const [isCollapse, setIsCollapse] = useState(() => {
+    if (isTableOrMobile) {
+      return true;
+    }
+
+    return false;
+  });
 
   function handleToggleCollapse() {
     setIsCollapse(!isCollapse);
   }
 
-  useEffect(() => {
-    if (isTableOrMobile) {
-      setIsCollapse(true);
-    } else {
-      setIsCollapse(false);
-    }
-  }, [isTableOrMobile]);
-
   return (
     <CollapseContext.Provider
-      value={{ 
+      value={{
         isCollapse,
         toggleCollapse: handleToggleCollapse,
         isTableOrMobile
