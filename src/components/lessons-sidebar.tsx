@@ -1,29 +1,61 @@
-import { Transition, Portal } from "@headlessui/react";
+import { Portal } from "@headlessui/react";
+import { motion, AnimatePresence } from "framer-motion";
+import classname from "classnames";
+
+import { Lesson } from "./lesson";
+import { AvoidCollapseRegion } from "./avoid-collapse-region";
 
 import { useGetLessonsQuery } from "../graphql/generated";
 import { useCollapse } from "../hooks/use-collapse";
 
-import { Lesson } from "./lesson";
+const show = {
+  display: "block",
+  translateX: 0,
+  opacity: 1,
+};
+
+const hidden = {
+  translateX: "182px",
+  opacity: 0,
+};
 
 export function LessonsSidebar() {
-  const { hasCollapsed, isTableOrMobile } = useCollapse();
+  const { hasCollapsed, isHovering, isTableOrMobile } = useCollapse();
   const { loading, data } = useGetLessonsQuery();
 
   const content = (
-    <Transition
-      show={!hasCollapsed}
-      enter="transition-opacity duration-555"
-      enterFrom="opacity-0"
-      enterTo="opacity-100"
-      leave="transition-opacity duration-555"
-      leaveFrom="opacity-100"
-      leaveTo="opacity-0"
-    >
-      <aside
+    <AnimatePresence>
+      <motion.aside
         // mt-[81px] -> 81px is the header height.
-        className="md:static z-50 md:mt-0 mt-[81px] md:w-[348px] w-full absolute top-0 left-0 bg-gray-700 p-6 border-gray-600"
+        className={classname(
+          "z-50 md:w-[348px] w-full bg-gray-700 p-6 border-gray-600",
+          {
+            "absolute mt-[81px] top-0 right-0": hasCollapsed || isTableOrMobile,
+          }
+        )}
+        variants={{
+          show,
+          hidden,
+        }}
+        initial="hidden"
+        animate={
+          !hasCollapsed || isHovering
+            ? show
+            : {
+                ...hidden,
+                transitionEnd: {
+                  display: "none",
+                },
+              }
+        }
+        exit="hidden"
+        transition={{
+          bounce: 0,
+          ease: 'easeInOut',
+          duration: 0.4
+        }}
       >
-        <span className="block font-bold text-2xl pb-6 mb-6 border-gray-500">
+        <span className="block font-bold text-2xl border-gray-500">
           Cronograma de aulas
         </span>
 
@@ -40,9 +72,18 @@ export function LessonsSidebar() {
             ))}
           </div>
         )}
-      </aside>
-    </Transition>
+      </motion.aside>
+    </AnimatePresence>
   );
 
-  return isTableOrMobile ? <Portal>{content}</Portal> : content;
+  return isTableOrMobile ? (
+    <Portal>{content}</Portal>
+  ) : (
+    <AvoidCollapseRegion>
+      {hasCollapsed && (
+        <div className="absolute right-0 w-[82px] -mt-[25px] h-screen" />
+      )}
+      {content}
+    </AvoidCollapseRegion>
+  );
 }

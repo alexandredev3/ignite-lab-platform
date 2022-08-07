@@ -7,32 +7,79 @@ interface CollapseProviderProps {
 
 interface CollapseContextProps {
   hasCollapsed: boolean;
-  toggleCollapse: () => void;
+  isHovering: boolean;
   isTableOrMobile: boolean;
+  toggleCollapse: () => void;
+  onMouseEnter: () => void;
+  onMouseLeave: () => void;
 }
 
 const CollapseContext = createContext<CollapseContextProps>(
   {} as CollapseContextProps
 );
 
+const LOCAL_STORAGE_COLLAPSED_KEY = "ignite-lab-player/sidebar-collapsed";
+
 function CollapseProvider({ children }: CollapseProviderProps) {
-  const [hasCollapsed, setHasCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState({
+    isHovering: false,
+    hasCollapsed: false,
+  });
   const isTableOrMobile = useMediaQuery({ maxWidth: 768 });
 
   function toggleCollapse() {
-    setHasCollapsed(!hasCollapsed);
+    const hasCollapsed = !collapsed.hasCollapsed;
+
+    setCollapsed({
+      ...collapsed,
+      hasCollapsed,
+    });
+
+    localStorage.setItem(
+      LOCAL_STORAGE_COLLAPSED_KEY,
+      JSON.stringify(hasCollapsed)
+    );
+  }
+
+  function onMouseEnter() {
+    setCollapsed({
+      ...collapsed,
+      isHovering: true,
+    });
+  }
+
+  function onMouseLeave() {
+    setCollapsed({
+      ...collapsed,
+      isHovering: false,
+    });
   }
 
   useEffect(() => {
-    setHasCollapsed(isTableOrMobile);
-  }, [isTableOrMobile])
+    const hasCollapsed = localStorage.getItem(LOCAL_STORAGE_COLLAPSED_KEY);
+
+    if (hasCollapsed) {
+      setCollapsed({
+        isHovering: false,
+        hasCollapsed: JSON.parse(hasCollapsed),
+      });
+    } else {
+      setCollapsed({
+        isHovering: false,
+        hasCollapsed: isTableOrMobile,
+      });
+    }
+  }, [isTableOrMobile]);
 
   return (
     <CollapseContext.Provider
       value={{
-        hasCollapsed,
+        hasCollapsed: collapsed.hasCollapsed,
+        isHovering: collapsed.isHovering,
+        isTableOrMobile,
         toggleCollapse,
-        isTableOrMobile
+        onMouseEnter,
+        onMouseLeave,
       }}
     >
       {children}
