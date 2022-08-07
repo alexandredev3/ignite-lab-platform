@@ -55,33 +55,29 @@ export function Player({ videoId, lessonId }: PlayerProps) {
 
   const onEnded = async () => {
     if (autoPlayEnabled) {
-      toast.info(
-        "Pulando para a próxima aula em 3 segundos. Clique para cancelar.",
-        {
-          toastId: nextLessonToastId,
-          onClose: async () => {
-            const { data } = await getLessons();
+      const { data } = await getLessons();
 
-            const currentLessonIndex = data?.lessons.findIndex(
-              (lesson) => lesson.id === lessonId
-            );
-            const nextLesson = data?.lessons[currentLessonIndex! + 1];
-
-            toast.update(nextLessonToastId, {
-              data: {
-                slug: nextLesson?.slug,
-              },
-            });
-          },
-          onClick: () => {
-            toast.update(nextLessonToastId, {
-              data: {
-                slug: null,
-              },
-            });
-          },
-        }
+      const currentLessonIndex = data?.lessons.findIndex(
+        (lesson) => lesson.id === lessonId
       );
+      const nextLesson = data?.lessons[currentLessonIndex! + 1];
+
+      if (nextLesson) {
+        toast.info(
+          "Pulando para a próxima aula em 3 segundos. Clique para cancelar.",
+          {
+            toastId: nextLessonToastId,
+            data: nextLesson,
+            onClick: () => {
+              toast.update(nextLessonToastId, {
+                data: {
+                  slug: null,
+                },
+              });
+            },
+          }
+        );
+      }
     }
   };
 
