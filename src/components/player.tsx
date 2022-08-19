@@ -3,19 +3,24 @@ import { DefaultUi, Player as VimePlayer, Youtube } from "@vime/react";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastItem } from "react-toastify";
 import { Switch } from "@headlessui/react";
+import type { ApolloError } from "@apollo/client";
 
 import { useGetLessonsLazyQuery } from "../graphql/generated";
 
 import "@vime/core/themes/default.css";
 
 interface PlayerProps {
-  videoId: string;
-  lessonId: string;
+  lesson: {
+    id: string;
+    videoId: string;
+  };
+  loading: boolean;
+  error: ApolloError | undefined;
 }
 
 const LOCAL_STORAGE_AUTOPLAY_KEY = "ignite-lab-player/autoplay";
 
-export function Player({ videoId, lessonId }: PlayerProps) {
+export function Player({ lesson, loading, error }: PlayerProps) {
   const player = useRef<HTMLVmPlayerElement>(null);
   const [getLessons] = useGetLessonsLazyQuery();
   const navigate = useNavigate();
@@ -58,7 +63,7 @@ export function Player({ videoId, lessonId }: PlayerProps) {
       const { data } = await getLessons();
 
       const currentLessonIndex = data?.lessons.findIndex(
-        (lesson) => lesson.id === lessonId
+        (lesson) => lesson.id === lesson.id
       );
       const nextLesson = data?.lessons[currentLessonIndex! + 1];
 
@@ -99,19 +104,29 @@ export function Player({ videoId, lessonId }: PlayerProps) {
     <>
       <div className="flex justify-center bg-black">
         <div className="w-full h-full max-w-[1100px] max-h-[60vh] aspect-video">
-          <VimePlayer
-            ref={player}
-            autoplay={autoPlayEnabled}
-            onVmPlaybackEnded={onEnded}
-          >
-            <Youtube videoId={videoId} />
-            <DefaultUi />
-          </VimePlayer>
+          {loading ? (
+            <div className="flex-1">
+              <h3>Loading...</h3>
+            </div>
+          ) : error ? (
+            <div className="flex-1">
+              <h3>Something went terrible wrong!</h3>
+            </div>
+          ) : (
+            <VimePlayer
+              ref={player}
+              autoplay={autoPlayEnabled}
+              onVmPlaybackEnded={onEnded}
+            >
+              <Youtube videoId={lesson.videoId} />
+              <DefaultUi />
+            </VimePlayer>
+          )}
         </div>
       </div>
-      <div className="flex justify-end mr-4 mt-4">
+      <div className="max-w-[1100px] w-full m-auto mt-4">
         <Switch.Group>
-          <div className="flex items-center">
+          <div className="flex flex-1 mr-2 justify-end items-center">
             <Switch.Label className="mr-4 text-lg">Autoplay</Switch.Label>
             <Switch
               name="autoplay"
