@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import classnames from "classnames";
+import { toast } from "react-toastify";
 
 import { useCreateSubscriberMutation } from "../graphql/generated";
 
@@ -31,8 +32,7 @@ export function Subscribe() {
       navigate(`/event`);
     } catch (err: any) {
       console.error(err);
-      // TODO: handle this error decently.
-      alert("Something went wrong. Try again later...");
+      toast.error("Something went wrong. Try again later...");
     }
   }
 

@@ -23,6 +23,16 @@ export function LessonsSidebar() {
   const { hasCollapsed, isHovering, isTableOrMobile } = useCollapse();
   const { loading, data } = useGetLessonsQuery();
 
+  const animate =
+    !hasCollapsed || isHovering
+      ? show
+      : {
+          ...hidden,
+          transitionEnd: {
+            display: "none",
+          },
+        };
+
   const content = (
     <AnimatePresence>
       <motion.aside
@@ -37,22 +47,12 @@ export function LessonsSidebar() {
           show,
           hidden,
         }}
-        initial="hidden"
-        animate={
-          !hasCollapsed || isHovering
-            ? show
-            : {
-                ...hidden,
-                transitionEnd: {
-                  display: "none",
-                },
-              }
-        }
+        animate={animate}
         exit="hidden"
         transition={{
           bounce: 0,
-          ease: 'easeInOut',
-          duration: 0.4
+          ease: "easeInOut",
+          duration: 0.4,
         }}
       >
         <span className="block font-bold text-2xl border-gray-500">
