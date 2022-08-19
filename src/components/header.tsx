@@ -11,10 +11,12 @@ export function Header() {
     useCollapse();
 
   return (
-    <header className="w-full p-5 gap-[8px] flex justify-between items-center bg-gray-700 border-b border-gray-600">
-      <Logo />
+    <header className="w-full p-5 gap-[8px] flex justify-center items-center bg-gray-700 border-b border-gray-600">
+      <div className="md:w-full md:flex md:justify-center">
+        <Logo className="md:w-[237px] w-[192px]" />
+      </div>
 
-      <div className="block">
+      <div className="flex flex-1 justify-end">
         {isTableOrMobile ? (
           <button
             onClick={toggleCollapse}

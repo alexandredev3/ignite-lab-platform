@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useEffect, useState } from "react";
+import { createContext, ReactNode, useLayoutEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 
 interface CollapseProviderProps {
@@ -14,18 +14,29 @@ interface CollapseContextProps {
   onMouseLeave: () => void;
 }
 
+type CollapsedState = {
+  isHovering: boolean;
+  hasCollapsed: boolean;
+}
+
 const CollapseContext = createContext<CollapseContextProps>(
   {} as CollapseContextProps
 );
 
 const LOCAL_STORAGE_COLLAPSED_KEY = "ignite-lab-player/sidebar-collapsed";
 
+const initialCollapsedState = {
+  isHovering: false,
+  hasCollapsed: true,
+};
+
 function CollapseProvider({ children }: CollapseProviderProps) {
-  const [collapsed, setCollapsed] = useState({
-    isHovering: false,
-    hasCollapsed: false,
+  const [collapsed, setCollapsed] = useState<CollapsedState>(initialCollapsedState);
+  const isTableOrMobile = useMediaQuery({ maxWidth: 768 }, undefined, (matched) => {
+    if (matched) {
+      setCollapsed(initialCollapsedState);
+    }
   });
-  const isTableOrMobile = useMediaQuery({ maxWidth: 768 });
 
   function toggleCollapse() {
     const hasCollapsed = !collapsed.hasCollapsed;
@@ -55,21 +66,22 @@ function CollapseProvider({ children }: CollapseProviderProps) {
     });
   }
 
-  useEffect(() => {
-    const hasCollapsed = localStorage.getItem(LOCAL_STORAGE_COLLAPSED_KEY);
+  useLayoutEffect(() => {
+    let shouldBeCollapsed = true;
+    
+    if (!isTableOrMobile) {
+      const hasCollapsedStorage = localStorage.getItem(LOCAL_STORAGE_COLLAPSED_KEY);
 
-    if (hasCollapsed) {
-      setCollapsed({
-        isHovering: false,
-        hasCollapsed: JSON.parse(hasCollapsed),
-      });
-    } else {
-      setCollapsed({
-        isHovering: false,
-        hasCollapsed: isTableOrMobile,
-      });
+      if (hasCollapsedStorage) {
+        shouldBeCollapsed = JSON.parse(hasCollapsedStorage);
+      }
     }
-  }, [isTableOrMobile]);
+
+    setCollapsed({
+      isHovering: false,
+      hasCollapsed: shouldBeCollapsed,
+    });
+  }, []);
 
   return (
     <CollapseContext.Provider

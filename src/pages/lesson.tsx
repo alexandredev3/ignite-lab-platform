@@ -24,18 +24,17 @@ export function Lesson() {
     },
   });
 
-  if (loading) {
-    return (
-      <div className="flex-1">
-        <h4>Loading...</h4>
-      </div>
-    );
-  }
-
   return (
     <>
       <div className="flex-1">
-        <Player videoId={data?.lesson?.videoId!} lessonId={data?.lesson?.id!} />
+        <Player
+          lesson={{
+            id: data?.lesson?.id!,
+            videoId: data?.lesson?.videoId!,
+          }}
+          loading={loading}
+          error={error}
+        />
 
         <div className="p-8 max-w-[1100px] mx-auto">
           <section className="md:flex-row flex-col flex items-start gap-16">
@@ -114,8 +113,8 @@ export function Lesson() {
               <div className="py-6 leading-relaxed">
                 <strong className="text-2xl">Wallpapers exclusivos</strong>
                 <p className="text-sm text-gray-200 mt-2">
-                  Baixe wallpapers exclusivos da Maratona Explorer e personalize a
-                  sua máquina
+                  Baixe wallpapers exclusivos da Maratona Explorer e personalize
+                  a sua máquina
                 </p>
               </div>
               <div className="h-full p-6 flex items-center">

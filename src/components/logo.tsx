@@ -1,11 +1,13 @@
-export function Logo() {
+import { SVGProps } from "react";
+
+export function Logo(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
+      className="w-[237px]"
       xmlns="http://www.w3.org/2000/svg"
-      width="237"
-      height="34"
       fill="none"
       viewBox="0 0 237 34"
+      {...props}
     >
       <path
         fill="#fff"
