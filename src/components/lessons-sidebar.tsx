@@ -15,7 +15,7 @@ const show = {
 };
 
 const hidden = {
-  translateX: "182px",
+  translateX: "228px",
   opacity: 0,
 };
 
@@ -52,7 +52,7 @@ export function LessonsSidebar() {
         transition={{
           bounce: 0,
           ease: "easeInOut",
-          duration: 0.4,
+          duration: 0.3,
         }}
       >
         <span className="block font-bold text-2xl border-gray-500">
