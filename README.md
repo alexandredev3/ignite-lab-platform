@@ -16,7 +16,9 @@
 </p>
 
 <p>
-  Looking for a new furry friend to join your family? The <strong>FindAFriend</strong> platform connects you with adoptable pets in your area, helping you find the perfect companion to fit your lifestyle and preferences. With a user-friendly interface, you can easily browse through listings of cats and dogs available for adoption, filtering by city, age, size, and more. Our detailed profiles give you all the information you need to make an informed decision!
+  <strong>Ignite Lab</strong> is a cutting-edge programming event website that aims to revolutionize the way developers learn and engage with the global programming community. By providing a platform where users can subscribe and watch captivating talks, Ignite Lab seeks to foster knowledge sharing, inspiration, and networking opportunities among programmers of all levels of expertise.
+
+  The core feature of Ignite Lab is its seamless integration with a comprehensive Content Management System (CMS). This CMS empowers event organizers to effortlessly create and manage their programming events. Event owners have the flexibility to choose between two main event formats: live events or pre-recorded videos, ensuring a diverse and engaging experience for participants.
 </p>
 
 ## Preview
